@@ -1,19 +1,4 @@
 services:
-  mysql:
-    image: mariadb:11.4
-    logging:
-      driver: none
-    command: ["--max-allowed-packet=512M"]
-    volumes:
-      - "./data/db:/var/lib/mysql:delegated"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    restart: always
-    networks:
-      - default
   litespeed:
     image: litespeedtech/openlitespeed:${OLS_VERSION}-${PHP_VERSION}
     container_name: litespeed
@@ -36,22 +21,10 @@ services:
       TZ: ${TimeZone}
     networks:
       - default
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION}
-    env_file:
-      - .env
-    ports:
-      - 8080:80
-    environment:
-      PMA_HOST: mysql
-    restart: always
-    networks:
-      - default
   redis:
     image: "redis:alpine"
     logging:
       driver: none
-    # command: redis-server --requirepass 8b405f60665e48f795752e534d93b722
     volumes:
       - ./redis/data:/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
