@@ -14,7 +14,11 @@ services:
       - ./bin/container:/usr/local/bin
       - ./sites:/var/www/vhosts
       - ./logs:/usr/local/lsws/logs
-    restart: always
+    ports:
+      - "7080:7080"   # SOLO admin
+    expose:
+      - "80"          # web interno para Traefik
+    restart: always 
   redis:
     image: "redis:alpine"
     logging:
